@@ -20,6 +20,10 @@ const CheckoutForm = ({ clientSecret }) => {
     const { paymentMethod, error: paymentMethodError } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardNumberElement),
+      billing_details:{
+        name:'Zeeshan'
+      }
+  
     });
 
     if (paymentMethodError) {
@@ -33,6 +37,7 @@ const CheckoutForm = ({ clientSecret }) => {
       clientSecret,
       {
         payment_method: paymentMethod.id,
+        
       }
     );
 
@@ -51,6 +56,8 @@ const CheckoutForm = ({ clientSecret }) => {
       <CardNumberElement />
       <CardCvcElement />
       <CardExpiryElement />
+      <div><label>Card Holder name</label>
+      <input type="tex" /></div>
       <button disabled={isProcessing || !stripe || !elements} id="submit" className="btn btn-primay" style={{ margin: '15px 0' }}>
         <span id="button-text">
           {isProcessing ? "Processing ... " : "Pay now"}
