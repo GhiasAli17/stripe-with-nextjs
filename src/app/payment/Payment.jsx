@@ -20,8 +20,9 @@ function Payment() {
       method: "POST",
       body: JSON.stringify({}),
     }).then(async (result) => {
-        // console.log("inside 2nd Effect", await result.json())
+        
       var { clientSecret } = await result.json();
+      console.log("inside 2nd Effect", clientSecret)
       setClientSecret(clientSecret);
     });
   }, []);
@@ -32,7 +33,7 @@ function Payment() {
       {clientSecret && stripePromise && (
 
         <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <CheckoutForm />
+          <CheckoutForm clientSecret={clientSecret}/>
         </Elements>
       )}
     </>

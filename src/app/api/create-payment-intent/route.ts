@@ -6,9 +6,10 @@ export const POST = async (request: any) => {
 
     try {
         const paymentIntent = await stripe.paymentIntents.create({
-          currency: "EUR",
-          amount: 1999,
+          currency: "USD",
+          amount: 6000,
           automatic_payment_methods: { enabled: false },
+        
         });
     
         // Send publishable key and PaymentIntent details to client
