@@ -29,7 +29,7 @@ function Payment() {
 
   return (
     <>
-      <h1>React Stripe and the Payment Element</h1>
+      <h1> Stripe and the Payment Element</h1>
       {clientSecret && stripePromise && (
 
         <Elements stripe={stripePromise} options={{ clientSecret }}>
