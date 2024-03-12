@@ -1,4 +1,5 @@
 import Payment from '@/app/payment/Payment'
+import PaymentSetup from '@/app/setup-intent/PaymentSetup'
 const products: Product[] = [
   {
     id: "1",
@@ -23,7 +24,8 @@ const products: Product[] = [
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Payment />
+      {/* <Payment /> */}
+      <PaymentSetup />
       {/* <div className="flex flex-col gap-8">
         <h1 className="text-3xl">E-Commerce Cart System</h1>
         <div className="grid grid-cols-3 gap-4">
