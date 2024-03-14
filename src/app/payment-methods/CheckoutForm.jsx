@@ -6,19 +6,7 @@ const CheckoutForm = () => {
   const elements = useElements();
   const [message, setMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [clientSecret, setClientSecret] = useState("");
 
-  useEffect(() => {
-    fetch("/api/create-payment-intent", {
-      method: "POST",
-      body: JSON.stringify({}),
-    }).then(async (result) => {
-        
-      var { clientSecret } = await result.json();
-      console.log("inside 2nd Effect", clientSecret)
-      setClientSecret(clientSecret);
-    });
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,37 +22,59 @@ const CheckoutForm = () => {
       type: "card",
       card: elements.getElement(CardNumberElement),
       billing_details:{
-        name:'mashpoor'
+        name:'nazim',
+        email:'nazim@gmail.com'
       }
   
     });
+
+    console.log("paytment",paymentMethod)
 
     if (paymentMethodError) {
       setMessage(paymentMethodError.message);
       setIsProcessing(false);
       return;
     }
+    else{
 
-    // Now that you have a PaymentMethod, confirm the payment
-    const { error: confirmError } = await stripe.confirmCardPayment(
-      clientSecret,
-      {
-        payment_method: paymentMethod.id,
-        
-      }
-    );
+      // create customer with payment id
+      const res = await fetch("/api/create-payment-methods", {
+        method: "POST",
+        body: JSON.stringify({id:paymentMethod.id}),
+      })
 
-    if (confirmError) {
-      setMessage(confirmError.message);
-    } else {
-      setMessage("Payment confirmed successfully!");
-      // Handle successful payment confirmation
+      console.log("customer",res)
+      setMessage("Success")
     }
 
     setIsProcessing(false);
   };
 
- 
+  const onClickRetrieve = async () => {
+    
+  
+  const list = await  fetch("/api/create-payment-methods")
+  console.log("list",list)
+  }
+  const onClickUpdate = async () => {
+    
+  
+    const update = await  fetch("/api/create-payment-methods",{
+      method:"PUT",
+      body:JSON.stringify({})
+    })
+    console.log("update frontEnd",update)
+    }
+
+    const onClickDelete = async () => {
+    
+  
+      const update = await  fetch("/api/create-payment-methods",{
+        method:"DELETE",
+        body:JSON.stringify({})
+      })
+      console.log("Dlete frontEnd",update)
+      }
 
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
@@ -78,7 +88,9 @@ const CheckoutForm = () => {
           {isProcessing ? "Processing ... " : "Pay now"}
         </span>
       </button>
-      
+      <button onClick={onClickRetrieve}>Retrieve Methods</button>
+      <button onClick={onClickUpdate}>Update</button>
+      <button onClick={onClickDelete}>Delete</button>
       {message && <div id="payment-message">{message}</div>}
     </form>
   );
